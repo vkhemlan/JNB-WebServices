@@ -17,6 +17,7 @@
 			<list>
 				<value>dw.spring3.rest.bean.Employee</value>
 				<value>dw.spring3.rest.bean.EmployeeList</value>
+				<value>cl.bomberos.region.bean.Region</value>
 			</list>
 		</property>
 	</bean>
@@ -50,4 +51,5 @@
 		<property name="employeeDS" ref="employeeDS" />
 		<property name="jaxb2Mashaller" ref="jaxbMarshaller"/>
 	</bean>
+	<bean id="regionesController" class="cl.bomberos.region.controller.RegionController" />
 </beans>

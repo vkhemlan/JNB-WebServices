@@ -1,4 +1,4 @@
-	package dw.spring3.rest.controller;
+package dw.spring3.rest.controller;
 
 import java.io.StringReader;
 import java.util.List;
