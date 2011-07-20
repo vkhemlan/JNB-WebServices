@@ -18,11 +18,16 @@
 				<value>dw.spring3.rest.bean.Employee</value>
 				<value>dw.spring3.rest.bean.EmployeeList</value>
 				<value>cl.bomberos.region.bean.Region</value>
+				<value>cl.bomberos.region.bean.RegionList</value>
 			</list>
 		</property>
 	</bean>
 	
-	<bean id="employees" class="org.springframework.web.servlet.view.xml.MarshallingView">
+	<bean id="region" class="org.springframework.web.servlet.view.xml.MarshallingView">
+		<constructor-arg ref="jaxbMarshaller" />
+	</bean>
+	
+	<bean id="regiones" class="org.springframework.web.servlet.view.xml.MarshallingView">
 		<constructor-arg ref="jaxbMarshaller" />
 	</bean>
 	
@@ -51,5 +56,5 @@
 		<property name="employeeDS" ref="employeeDS" />
 		<property name="jaxb2Mashaller" ref="jaxbMarshaller"/>
 	</bean>
-	<bean id="regionesController" class="cl.bomberos.region.controller.RegionController" />
+	<bean id="regionController" class="cl.bomberos.region.controller.RegionController" />
 </beans>

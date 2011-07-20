@@ -3,22 +3,22 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Employees</title>
+	<title>Información de región</title>
 </head>
 <body>
 <table border=1>
 	<thead><tr>
 		<th>ID</th>
-		<th>Name</th>
-		<th>Email</th>
+		<th>Número</th>
+		<th>Nombre</th>
+		<th>Capital</th>
 	</tr></thead>
-	<c:forEach var="employee" items="${employees.employees}">
 	<tr>
-		<td>${employee.id}</td>
-		<td>${employee.name}</td>
-		<td>${employee.email}</td>
+		<td>${region.id}</td>
+		<td>${region.numero}</td>
+		<td>${region.nombre}</td>
+		<td>${region.capital}</td>
 	</tr>
-	</c:forEach>
 </table>
 </body>
 </html>
