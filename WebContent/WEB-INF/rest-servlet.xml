@@ -17,17 +17,12 @@
 			<list>
 				<value>dw.spring3.rest.bean.Employee</value>
 				<value>dw.spring3.rest.bean.EmployeeList</value>
-				<value>cl.bomberos.region.bean.Region</value>
-				<value>cl.bomberos.region.bean.RegionList</value>
+				<value>cl.bomberos.usuario.bean.Usuario</value>
 			</list>
 		</property>
 	</bean>
 	
-	<bean id="region" class="org.springframework.web.servlet.view.xml.MarshallingView">
-		<constructor-arg ref="jaxbMarshaller" />
-	</bean>
-	
-	<bean id="regiones" class="org.springframework.web.servlet.view.xml.MarshallingView">
+	<bean id="usuario" class="org.springframework.web.servlet.view.xml.MarshallingView">
 		<constructor-arg ref="jaxbMarshaller" />
 	</bean>
 	
@@ -50,11 +45,35 @@
 		</property>
 	</bean>
 	
-	<bean id="employeeDS" class="dw.spring3.rest.ds.EmployeeDS"/>
-		
-	<bean id="employeeController" class="dw.spring3.rest.controller.EmployeeController">
-		<property name="employeeDS" ref="employeeDS" />
-		<property name="jaxb2Mashaller" ref="jaxbMarshaller"/>
+	<bean id="principalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="org.postgresql.Driver"/>
+		<property name="url" value="jdbc:postgresql:principal"/>
+		<property name="username" value="cc61a"/>
+		<property name="password" value="cc61a"/>
 	</bean>
-	<bean id="regionController" class="cl.bomberos.region.controller.RegionController" />
+	
+	<bean id="principalSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="principalDataSource"/>
+		<property name="annotatedClasses">
+			<list>
+				<value>cl.bomberos.usuario.bean.Usuario</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.PostgreSQLDialect
+				</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="usuarioDao" class="cl.bomberos.usuario.dao.UsuarioDaoImpl">
+		<property name="sessionFactory" ref="principalSessionFactory"/>
+	</bean>
+	
+	<bean id="usuarioController" class="cl.bomberos.usuario.controller.UsuarioController">
+		<property name="usuarioDao" ref="usuarioDao"/>
+	</bean>
 </beans>
