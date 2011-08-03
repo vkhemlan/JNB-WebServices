@@ -1,4 +1,4 @@
-package cl.bomberos.usuario.bean;
+package cl.bomberos.bean;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

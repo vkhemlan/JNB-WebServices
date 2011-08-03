@@ -1,4 +1,4 @@
-package cl.bomberos.usuario.controller;
+package cl.bomberos.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import cl.bomberos.usuario.bean.Usuario;
-import cl.bomberos.usuario.dao.UsuarioDao;
+import cl.bomberos.bean.Usuario;
+import cl.bomberos.dao.UsuarioDao;
 
 @Controller
 public class UsuarioController {

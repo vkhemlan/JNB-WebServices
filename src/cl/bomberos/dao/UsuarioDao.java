@@ -1,19 +1,17 @@
-package cl.bomberos.usuario.dao;
+package cl.bomberos.dao;
 
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
-import cl.bomberos.usuario.bean.Usuario;
+import cl.bomberos.bean.Usuario;
 
-public class UsuarioDaoImpl implements UsuarioDao {
+public class UsuarioDao {
 	private HibernateTemplate hibernateTemplate;
 	
-	@Override
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
 
-	@Override
 	public Usuario get(int id) {
 		Usuario usuario = hibernateTemplate.get(Usuario.class, id);
 		return usuario;

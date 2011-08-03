@@ -1,62 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context.xsd">
-	
-	<context:component-scan base-package="dw.spring3.rest.controller"/>
-	
-	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
-	
+
+	<context:component-scan base-package="dw.spring3.rest.controller" />
+
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="useDefaultSuffixPattern" value="false" />
+	</bean>
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+
 	<bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
 		<property name="classesToBeBound">
 			<list>
 				<value>dw.spring3.rest.bean.Employee</value>
 				<value>dw.spring3.rest.bean.EmployeeList</value>
-				<value>cl.bomberos.usuario.bean.Usuario</value>
+				<value>cl.bomberos.bean.Usuario</value>
+				<value>cl.bomberos.bean.Mailbox</value>
+				<value>cl.bomberos.bean.UsuarioTieneMailbox</value>
 			</list>
 		</property>
 	</bean>
-	
-	<bean id="usuario" class="org.springframework.web.servlet.view.xml.MarshallingView">
+
+	<bean id="usuario"
+		class="org.springframework.web.servlet.view.xml.MarshallingView">
 		<constructor-arg ref="jaxbMarshaller" />
 	</bean>
-	
-	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+
+	<bean id="mailbox"
+		class="org.springframework.web.servlet.view.xml.MarshallingView">
+		<constructor-arg ref="jaxbMarshaller" />
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<property name="mediaTypes">
 			<map>
-				<entry key="xml" value="application/xml"/>
+				<entry key="xml" value="application/xml" />
 				<entry key="html" value="text/html" />
 			</map>
 		</property>
 		<property name="viewResolvers">
 			<list>
-				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
-				<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-					<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-					<property name="prefix" value="/WEB-INF/jsp/"/>
-					<property name="suffix" value=".jsp"/>
+				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+				<bean id="viewResolver"
+					class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+					<property name="viewClass"
+						value="org.springframework.web.servlet.view.JstlView" />
+					<property name="prefix" value="/WEB-INF/jsp/" />
+					<property name="suffix" value=".jsp" />
 				</bean>
 			</list>
 		</property>
 	</bean>
-	
-	<bean id="principalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="org.postgresql.Driver"/>
-		<property name="url" value="jdbc:postgresql:principal"/>
-		<property name="username" value="cc61a"/>
-		<property name="password" value="cc61a"/>
+
+	<bean id="principalDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://localhost/principal" />
+		<property name="username" value="cc61a" />
+		<property name="password" value="cc61a" />
 	</bean>
-	
-	<bean id="principalSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-		<property name="dataSource" ref="principalDataSource"/>
+
+	<bean id="postfixDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql:postfix" />
+		<property name="username" value="cc61a" />
+		<property name="password" value="cc61a" />
+	</bean>
+
+	<bean id="principalSessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="principalDataSource" />
 		<property name="annotatedClasses">
 			<list>
-				<value>cl.bomberos.usuario.bean.Usuario</value>
+				<value>cl.bomberos.bean.Usuario</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -68,12 +92,51 @@
 			</props>
 		</property>
 	</bean>
-	
-	<bean id="usuarioDao" class="cl.bomberos.usuario.dao.UsuarioDaoImpl">
-		<property name="sessionFactory" ref="principalSessionFactory"/>
+
+	<bean id="postfixSessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="postfixDataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>cl.bomberos.bean.Mailbox</value>
+				<value>cl.bomberos.bean.UsuarioTieneMailbox</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.PostgreSQLDialect
+				</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
 	</bean>
-	
-	<bean id="usuarioController" class="cl.bomberos.usuario.controller.UsuarioController">
-		<property name="usuarioDao" ref="usuarioDao"/>
+
+	<bean id="usuarioDao" class="cl.bomberos.dao.UsuarioDao">
+		<property name="sessionFactory" ref="principalSessionFactory" />
+	</bean>
+
+	<bean id="mailboxDao" class="cl.bomberos.dao.MailboxDao">
+		<property name="postfixSessionFactory" ref="postfixSessionFactory" />
+		<property name="principalSessionFactory" ref="principalSessionFactory" />
+	</bean>
+
+	<bean id="usuarioTieneMailboxDao" class="cl.bomberos.dao.UsuarioTieneMailboxDao">
+		<property name="sessionFactory" ref="postfixSessionFactory" />
+	</bean>
+
+	<bean id="usuarioController" class="cl.bomberos.controller.UsuarioController">
+		<property name="usuarioDao" ref="usuarioDao" />
+	</bean>
+
+	<bean id="mylog"
+		class="org.springframework.beans.factory.config.CommonsLogFactoryBean">
+		<property name="logName" value="rootLogger" />
+	</bean>
+
+
+	<bean id="loginController" class="cl.bomberos.controller.LoginController">
+		<property name="mailboxDao" ref="mailboxDao" />
+		<property name="log" ref="mylog"/>
 	</bean>
 </beans>
