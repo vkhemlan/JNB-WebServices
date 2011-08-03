@@ -144,4 +144,8 @@ public class Usuario {
 		this.genero = genero;
 	}
 
+	public String fullName() {
+		return this.getNombre() + " " + this.getApellidoPaterno();
+	}
+
 }

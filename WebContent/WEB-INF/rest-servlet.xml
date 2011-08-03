@@ -113,23 +113,21 @@
 	</bean>
 
 	<bean id="usuarioDao" class="cl.bomberos.dao.UsuarioDao">
-		<property name="sessionFactory" ref="principalSessionFactory" />
+		<property name="principalSessionFactory" ref="principalSessionFactory" />
+		<property name="postfixSessionFactory" ref="postfixSessionFactory" />
+		<property name="log" ref="servicesLog"/>
 	</bean>
 
 	<bean id="mailboxDao" class="cl.bomberos.dao.MailboxDao">
 		<property name="postfixSessionFactory" ref="postfixSessionFactory" />
-		<property name="principalSessionFactory" ref="principalSessionFactory" />
+		<property name="log" ref="servicesLog"/>
 	</bean>
 
 	<bean id="usuarioTieneMailboxDao" class="cl.bomberos.dao.UsuarioTieneMailboxDao">
 		<property name="sessionFactory" ref="postfixSessionFactory" />
 	</bean>
 
-	<bean id="usuarioController" class="cl.bomberos.controller.UsuarioController">
-		<property name="usuarioDao" ref="usuarioDao" />
-	</bean>
-
-	<bean id="mylog"
+	<bean id="servicesLog"
 		class="org.springframework.beans.factory.config.CommonsLogFactoryBean">
 		<property name="logName" value="rootLogger" />
 	</bean>
@@ -137,6 +135,7 @@
 
 	<bean id="loginController" class="cl.bomberos.controller.LoginController">
 		<property name="mailboxDao" ref="mailboxDao" />
-		<property name="log" ref="mylog"/>
+		<property name="usuarioDao" ref="usuarioDao" />
+		<property name="log" ref="servicesLog"/>
 	</bean>
 </beans>

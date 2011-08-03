@@ -2,27 +2,27 @@ package cl.bomberos.dao;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import cl.bomberos.bean.Mailbox;
-import cl.bomberos.bean.Usuario;
-import cl.bomberos.bean.UsuarioTieneMailbox;
 
 public class MailboxDao {
 	private SessionFactory postfixSessionFactory;
-	private SessionFactory principalSessionFactory;
+	private Log log;
+	
+	public void setLog(Log log) {
+		this.log = log;
+	}
 	
 	public void setPostfixSessionFactory(SessionFactory postfixSessionFactory) {
 		this.postfixSessionFactory = postfixSessionFactory;
 	}
 	
-	public void setPrincipalSessionFactory(SessionFactory principalSessionFactory) {
-		this.principalSessionFactory = principalSessionFactory;
-	}
-
-	public Usuario authenticateUser(String username, String password) {
+	public Mailbox getAuthenticatedUserMailbox(String username, String password) {
+		log.info("Obteniendo mailbox para cliente con nombre de usuario '" + username + "' y contraseña '" + password +"'");
 		Session postfixSession = postfixSessionFactory.openSession();
 		
 		Query passwordCheckQuery = postfixSession.createQuery("from Mailbox where username = :username and password = :password");
@@ -31,40 +31,14 @@ public class MailboxDao {
 		@SuppressWarnings("rawtypes")
 		List mailboxes = passwordCheckQuery.list();
 		if (mailboxes.isEmpty()) {
+			log.info("No se encontró mailbox para el usuario, usualmente esto significa que el nombre de usuario y contraseña no concuerdan");
 			postfixSession.close();
 			return null;
 		}
 		
 		Mailbox mailbox = (Mailbox) mailboxes.get(0);
 		
-		Query mailboxCheckQuery = postfixSession.createQuery("from UsuarioTieneMailbox where mailbox = :mailbox");
-		mailboxCheckQuery.setParameter("mailbox", mailbox);
-		@SuppressWarnings("rawtypes")
-		List mailboxAssocciations = mailboxCheckQuery.list();
-		
-		postfixSession.close();
-		
-		if (mailboxAssocciations.isEmpty()) {
-			return null;
-		}
-		
-		UsuarioTieneMailbox mailboxAssociation = (UsuarioTieneMailbox) mailboxAssocciations.get(0);
-		
-		Session principalSession = principalSessionFactory.openSession();
-		Query usuarioCheckQuery = principalSession.createQuery("from Usuario where id = :id");
-		usuarioCheckQuery.setParameter("id", mailboxAssociation.getIdUsuario());
-		
-		@SuppressWarnings("rawtypes")
-		List usuarios = usuarioCheckQuery.list();
-		
-		principalSession.close();
-
-		if (usuarios.isEmpty()) {
-			return null;
-		}
-		
-		Usuario usuario = (Usuario) usuarios.get(0);
-		
-		return usuario;
+		log.info("Mailbox encontrado con username " + mailbox.getUsername());
+		return mailbox;
 	}
 }
