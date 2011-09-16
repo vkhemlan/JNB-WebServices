@@ -23,6 +23,10 @@
 				<value>cl.bomberos.bean.Usuario</value>
 				<value>cl.bomberos.bean.Mailbox</value>
 				<value>cl.bomberos.bean.UsuarioTieneMailbox</value>
+				<value>cl.bomberos.bean.Region</value>
+				<value>cl.bomberos.bean.RegionList</value>
+				<value>cl.bomberos.bean.Provincia</value>
+				<value>cl.bomberos.bean.ProvinciaList</value>
 			</list>
 		</property>
 	</bean>
@@ -34,6 +38,14 @@
 
 	<bean id="mailbox"
 		class="org.springframework.web.servlet.view.xml.MarshallingView">
+		<constructor-arg ref="jaxbMarshaller" />
+	</bean>
+	
+	<bean id="regiones" class="org.springframework.web.servlet.view.xml.MarshallingView">
+		<constructor-arg ref="jaxbMarshaller" />
+	</bean>
+	
+	<bean id="provincias" class="org.springframework.web.servlet.view.xml.MarshallingView">
 		<constructor-arg ref="jaxbMarshaller" />
 	</bean>
 
@@ -81,6 +93,8 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>cl.bomberos.bean.Usuario</value>
+				<value>cl.bomberos.bean.Region</value>
+				<value>cl.bomberos.bean.Provincia</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -117,6 +131,16 @@
 		<property name="postfixSessionFactory" ref="postfixSessionFactory" />
 		<property name="log" ref="servicesLog"/>
 	</bean>
+	
+	<bean id="regionDao" class="cl.bomberos.dao.RegionDao">
+		<property name="principalSessionFactory" ref="principalSessionFactory" />
+		<property name="log" ref="servicesLog"/>
+	</bean>
+	
+	<bean id="provinciaDao" class="cl.bomberos.dao.ProvinciaDao">
+		<property name="principalSessionFactory" ref="principalSessionFactory" />
+		<property name="log" ref="servicesLog"/>
+	</bean>
 
 	<bean id="mailboxDao" class="cl.bomberos.dao.MailboxDao">
 		<property name="postfixSessionFactory" ref="postfixSessionFactory" />
@@ -136,6 +160,16 @@
 	<bean id="loginController" class="cl.bomberos.controller.LoginController">
 		<property name="mailboxDao" ref="mailboxDao" />
 		<property name="usuarioDao" ref="usuarioDao" />
+		<property name="log" ref="servicesLog"/>
+	</bean>
+	
+	<bean id="regionController" class="cl.bomberos.controller.RegionController">
+		<property name="regionDao" ref="regionDao" />
+		<property name="log" ref="servicesLog"/>
+	</bean>
+	
+	<bean id="provinciaController" class="cl.bomberos.controller.ProvinciaController">
+		<property name="provinciaDao" ref="provinciaDao" />
 		<property name="log" ref="servicesLog"/>
 	</bean>
 </beans>
