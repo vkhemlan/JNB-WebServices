@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import cl.bomberos.adapter.RegionAdapter;
 
 @XmlRootElement(name = "provincia")
 @Entity
@@ -44,6 +47,7 @@ public class Provincia implements Serializable {
 	@Id
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "prov_fk_region", referencedColumnName = "regi_id")
+	@XmlJavaTypeAdapter(value = RegionAdapter.class)
 	public Region getRegion() {
 		return region;
 	}
