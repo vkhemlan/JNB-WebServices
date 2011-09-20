@@ -27,6 +27,8 @@
 				<value>cl.bomberos.bean.RegionList</value>
 				<value>cl.bomberos.bean.Provincia</value>
 				<value>cl.bomberos.bean.ProvinciaList</value>
+				<value>cl.bomberos.bean.Comuna</value>
+				<value>cl.bomberos.bean.ComunaList</value>
 			</list>
 		</property>
 	</bean>
@@ -95,6 +97,7 @@
 				<value>cl.bomberos.bean.Usuario</value>
 				<value>cl.bomberos.bean.Region</value>
 				<value>cl.bomberos.bean.Provincia</value>
+				<value>cl.bomberos.bean.Comuna</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -141,6 +144,11 @@
 		<property name="principalSessionFactory" ref="principalSessionFactory" />
 		<property name="log" ref="servicesLog"/>
 	</bean>
+	
+	<bean id="comunaDao" class="cl.bomberos.dao.ComunaDao">
+		<property name="principalSessionFactory" ref="principalSessionFactory" />
+		<property name="log" ref="servicesLog"/>
+	</bean>
 
 	<bean id="mailboxDao" class="cl.bomberos.dao.MailboxDao">
 		<property name="postfixSessionFactory" ref="postfixSessionFactory" />
@@ -170,6 +178,11 @@
 	
 	<bean id="provinciaController" class="cl.bomberos.controller.ProvinciaController">
 		<property name="provinciaDao" ref="provinciaDao" />
+		<property name="log" ref="servicesLog"/>
+	</bean>
+	
+	<bean id="comunaController" class="cl.bomberos.controller.ComunaController">
+		<property name="comunaDao" ref="comunaDao" />
 		<property name="log" ref="servicesLog"/>
 	</bean>
 </beans>
