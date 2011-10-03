@@ -33,6 +33,9 @@
 				<value>cl.bomberos.bean.CuerpoList</value>
 				<value>cl.bomberos.bean.Compania</value>
 				<value>cl.bomberos.bean.CompaniaList</value>
+				<value>cl.bomberos.bean.Cargo</value>
+				<value>cl.bomberos.bean.CargoList</value>
+				<value>cl.bomberos.bean.UsuarioTieneCargo</value>
 			</list>
 		</property>
 	</bean>
@@ -104,6 +107,8 @@
 				<value>cl.bomberos.bean.Comuna</value>
 				<value>cl.bomberos.bean.Cuerpo</value>				
 				<value>cl.bomberos.bean.Compania</value>
+				<value>cl.bomberos.bean.Cargo</value>
+				<value>cl.bomberos.bean.UsuarioTieneCargo</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -174,6 +179,11 @@
 	<bean id="usuarioTieneMailboxDao" class="cl.bomberos.dao.UsuarioTieneMailboxDao">
 		<property name="sessionFactory" ref="postfixSessionFactory" />
 	</bean>
+	
+	<bean id="usuarioTieneCargoDao" class="cl.bomberos.dao.UsuarioTieneCargoDao">
+		<property name="sessionFactory" ref="principalSessionFactory" />
+		<property name="log" ref="servicesLog"/>
+	</bean>
 
 	<bean id="servicesLog"
 		class="org.springframework.beans.factory.config.CommonsLogFactoryBean">
@@ -211,4 +221,11 @@
 		<property name="companiaDao" ref="companiaDao" />
 		<property name="log" ref="servicesLog"/>
 	</bean>
+	
+	<bean id="usuarioController" class="cl.bomberos.controller.UsuarioController">
+		<property name="usuarioDao" ref="usuarioDao" />
+		<property name="usuarioTieneCargoDao" ref="usuarioTieneCargoDao" />
+		<property name="log" ref="servicesLog"/>
+	</bean>
+
 </beans>

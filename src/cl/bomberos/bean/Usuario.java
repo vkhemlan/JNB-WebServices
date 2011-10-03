@@ -1,11 +1,17 @@
 package cl.bomberos.bean;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import cl.bomberos.adapter.CuerpoAdapter;
 
 @XmlRootElement(name = "usuario")
 @Entity
@@ -24,6 +30,7 @@ public class Usuario {
 	private String telefonoLaboral;
 	private String direccionLaboral;
 	private String genero;
+	private Cuerpo cuerpo;
 
 	@Id
 	@GeneratedValue
@@ -146,6 +153,17 @@ public class Usuario {
 
 	public String fullName() {
 		return this.getNombre() + " " + this.getApellidoPaterno();
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "usu_fk_cuerpo", referencedColumnName = "cuer_id")
+	@XmlJavaTypeAdapter(value = CuerpoAdapter.class)
+	public Cuerpo getCuerpo() {
+		return cuerpo;
+	}
+
+	public void setCuerpo(Cuerpo cuerpo) {
+		this.cuerpo = cuerpo;
 	}
 
 }
