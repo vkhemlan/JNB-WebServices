@@ -83,17 +83,17 @@
 	<bean id="principalDataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://localhost/principal" />
-		<property name="username" value="cc61a" />
-		<property name="password" value="cc61a" />
+		<property name="url" value="jdbc:postgresql://localhost/bomberos" />
+		<property name="username" value="vkhemlan" />
+		<property name="password" value="jc7c9dh3" />
 	</bean>
 
 	<bean id="postfixDataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql:postfix" />
-		<property name="username" value="cc61a" />
-		<property name="password" value="cc61a" />
+		<property name="url" value="jdbc:postgresql:bomberos" />
+		<property name="username" value="vkhemlan" />
+		<property name="password" value="jc7c9dh3" />
 	</bean>
 
 	<bean id="principalSessionFactory"

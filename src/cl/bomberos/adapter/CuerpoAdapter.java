@@ -11,7 +11,11 @@ public class CuerpoAdapter extends XmlAdapter<CuerpoReference, Cuerpo>
     public CuerpoReference marshal(Cuerpo v) throws Exception 
     {   
     	CuerpoReference ref = new CuerpoReference();
-        ref.id = v.getId();
+    	if (v == null) {
+    		ref.id = 0;
+    	} else {
+    		ref.id = v.getId();    		
+    	}
         return ref;
     }
 
